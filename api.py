@@ -1,8 +1,14 @@
-from flask import Flask, request, jsonify
-from engine import Account
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+import sqlite3
 from encryption import DecryptPassword
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS
+
+@app.route('/')
+def index():
+    return "Welcome to the Credentials Vault API"
 
 @app.route('/get_credentials', methods=['POST'])
 def get_credentials():
