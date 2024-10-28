@@ -21,18 +21,21 @@ def get_credentials():
     connection = sqlite3.connect('database.db')
     cur = connection.cursor()
     cur.execute("SELECT username, password FROM ACCOUNT WHERE service=?", (service,))
-    row = cur.fetchone()
+    rows = cur.fetchall()
     connection.close()
     
-    if row:
-        username, encrypted_password = row
-        decrypted_password = DecryptPassword(encrypted_password)
-        return jsonify({
-            'username': username,
-            'password': decrypted_password
-        })
+    if rows:
+        credentials = []
+        for row in rows:
+            username, encrypted_password = row
+            decrypted_password = DecryptPassword(encrypted_password)
+            credentials.append({
+                'username': username,
+                'password': decrypted_password
+            })
+        return jsonify({'credentials': credentials})
     else:
-        return jsonify({'error': 'Account not found'}), 404
+        return jsonify({'error': 'No accounts found for the service'}), 404
 
 @app.route('/save_credentials', methods=['POST'])
 def save_credentials():
