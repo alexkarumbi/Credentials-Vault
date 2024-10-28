@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Automatically fill in the service input field with the domain name of the current tab
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    const url = new URL(tabs[0].url);
+    const domain = url.hostname;
+    document.getElementById('service').value = domain;
+  });
+
   document.getElementById('fetch').addEventListener('click', function() {
     const service = document.getElementById('service').value;
     chrome.runtime.sendMessage({ action: 'fetchCredentials', service: service }, function(response) {
