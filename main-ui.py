@@ -3,7 +3,10 @@ import pyperclip
 from config_parser import GetConfigPaster, ChangeConfigPasterValue
 from tkinter import ttk, messagebox
 from tkinter import simpledialog 
+from tkinter import filedialog
+from file_encryption import generate_key, encrypt_file, decrypt_file
 import engine
+
 
 class PWControlApp(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -80,6 +83,28 @@ class MenuPage(tk.Frame):
         LogoImage = tk.Label(self,image=logo)
         LogoImage.image = logo
         LogoImage.place(x=0,y=0,width=280,height=250)
+
+         # Add buttons for file encryption and decryption
+        self.encrypt_button = tk.Button(self, text="Encrypt File", command=self.encrypt_file)
+        self.encrypt_button.place(x=50, y=100, width=150, height=30)
+
+        self.decrypt_button = tk.Button(self, text="Decrypt File", command=self.decrypt_file)
+        self.decrypt_button.place(x=50, y=150, width=150, height=30)
+
+    def encrypt_file(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            key = generate_key()
+            encrypt_file(file_path, key)
+            tk.messagebox.showinfo("Success", f"File encrypted successfully.\nKey: {key.decode()}")
+
+    def decrypt_file(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            key = tk.simpledialog.askstring("Input", "Enter the encryption key:")
+            if key:
+                decrypt_file(file_path, key.encode())
+                tk.messagebox.showinfo("Success", "File decrypted successfully.")
 
         add_account_button = tk.Button(self, text="Add Account", 
                         command=lambda: self.controller.ShowFrame('AddAccountPage'))
