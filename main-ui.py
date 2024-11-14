@@ -18,7 +18,7 @@ class PWControlApp(tk.Tk):
 
         self.frames = {}
         
-        for F in (LoginPage, MenuPage, AddAccountPage, LoadAccountPage, DeleteAccountPage, SettingsPage):
+        for F in (LoginPage, MenuPage, AddAccountPage, LoadAccountPage, DeleteAccountPage, SettingsPage,FileEncryptionPage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -86,18 +86,18 @@ class MenuPage(tk.Frame):
         logo_image.image = logo
         logo_image.pack(pady=10)
 
-        # Add buttons for file encryption and decryption
-        self.encrypt_button = tk.Button(self, text="Encrypt File", command=self.encrypt_file)
-        self.encrypt_button.pack(pady=5)
+        # # Add buttons for file encryption and decryption
+        # self.encrypt_button = tk.Button(self, text="Encrypt File", command=self.encrypt_file)
+        # self.encrypt_button.pack(pady=5)
 
-        self.decrypt_button = tk.Button(self, text="Decrypt File", command=self.decrypt_file)
-        self.decrypt_button.pack(pady=5)
+        # self.decrypt_button = tk.Button(self, text="Decrypt File", command=self.decrypt_file)
+        # self.decrypt_button.pack(pady=5)
 
-        self.copy_key_button = tk.Button(self, text="Copy Key", command=self.copy_key)
-        self.copy_key_button.pack(pady=5)
-        self.copy_key_button.config(state=tk.DISABLED)
+        # self.copy_key_button = tk.Button(self, text="Copy Key", command=self.copy_key)
+        # self.copy_key_button.pack(pady=5)
+        # self.copy_key_button.config(state=tk.DISABLED)
 
-        self.encryption_key = None
+        # self.encryption_key = None
 
         # Add buttons for account management and settings
         add_account_button = tk.Button(self, text="Add Account", command=lambda: self.controller.ShowFrame('AddAccountPage'))
@@ -112,48 +112,34 @@ class MenuPage(tk.Frame):
         settings_button = tk.Button(self, text="Settings", command=lambda: self.controller.ShowFrame('SettingsPage'))
         settings_button.pack(pady=5)
 
-    def encrypt_file(self):
-        file_path = filedialog.askopenfilename()
-        if file_path:
-            self.encryption_key = generate_key()
-            encrypt_file(file_path, self.encryption_key)
-            messagebox.showinfo("Success", "File encrypted successfully.")
-            self.copy_key_button.config(state=tk.NORMAL)
+        # Add a button for file encryption page
+        file_encryption_button = tk.Button(self, text="File Encryption", command=lambda: self.controller.ShowFrame('FileEncryptionPage'))
+        file_encryption_button.pack(pady=5)
 
-    def decrypt_file(self):
-        file_path = filedialog.askopenfilename()
-        if file_path:
-            key = simpledialog.askstring("Input", "Enter the encryption key:")
-            if key:
-                decrypt_file(file_path, key.encode())
-                messagebox.showinfo("Success", "File decrypted successfully.")
+    # def encrypt_file(self):
+    #     file_path = filedialog.askopenfilename()
+    #     if file_path:
+    #         self.encryption_key = generate_key()
+    #         encrypt_file(file_path, self.encryption_key)
+    #         messagebox.showinfo("Success", "File encrypted successfully.")
+    #         self.copy_key_button.config(state=tk.NORMAL)
 
-    def copy_key(self):
-        if self.encryption_key:
-            self.clipboard_clear()
-            self.clipboard_append(self.encryption_key.decode())
-            messagebox.showinfo("Success", "Encryption key copied to clipboard.")    
+    # def decrypt_file(self):
+    #     file_path = filedialog.askopenfilename()
+    #     if file_path:
+    #         key = simpledialog.askstring("Input", "Enter the encryption key:")
+    #         if key:
+    #             decrypt_file(file_path, key.encode())
+    #             messagebox.showinfo("Success", "File decrypted successfully.")
 
-# class CredentialsVaultApp(tk.Tk):
-#     def __init__(self, *args, **kwargs):
-#         tk.Tk.__init__(self, *args, **kwargs)
-#         container = tk.Frame(self)
-#         container.pack(side="top", fill="both", expand=True)
-#         container.grid_rowconfigure(0, weight=1)
-#         container.grid_columnconfigure(0, weight=1)
+    # def copy_key(self):
+    #     if self.encryption_key:
+    #         self.clipboard_clear()
+    #         self.clipboard_append(self.encryption_key.decode())
+    #         messagebox.showinfo("Success", "Encryption key copied to clipboard.")    
 
-#         self.frames = {}
-#         for F in (LoginPage, MenuPage, AddAccountPage, LoadAccountPage, DeleteAccountPage, SettingsPage):
-#             page_name = F.__name__
-#             frame = F(parent=container, controller=self)
-#             self.frames[page_name] = frame
-#             frame.grid(row=0, column=0, sticky="nsew")
 
-#         self.show_frame("LoginPage")
 
-#     def show_frame(self, page_name):
-#         frame = self.frames[page_name]
-#         frame.tkraise()
 class AddAccountPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -658,6 +644,55 @@ class SettingsPage(tk.Frame):
 
         submit_button = tk.Button(dialog, text='Submit', command=submit)
         submit_button.pack()
+
+class FileEncryptionPage(tk.Frame):
+    def __init__(self, parent, controller):
+        self.controller = controller
+        tk.Frame.__init__(self, parent)
+        
+        # Add logo
+        self.logo = tk.PhotoImage(file="logo.png")
+        logo_label = tk.Label(self, image=self.logo)
+        logo_label.pack(pady=10)
+
+        # Add home button
+        home_button = tk.Button(self, text="Home", width=9, height=1, command=lambda: controller.ShowFrame("MenuPage"))
+        home_button.place(x=0, y=0)
+
+        # Add buttons for file encryption and decryption
+        self.encrypt_button = tk.Button(self, text="Encrypt File", command=self.encrypt_file)
+        self.encrypt_button.pack(pady=5)
+
+        self.decrypt_button = tk.Button(self, text="Decrypt File", command=self.decrypt_file)
+        self.decrypt_button.pack(pady=5)
+
+        self.copy_key_button = tk.Button(self, text="Copy Key", command=self.copy_key)
+        self.copy_key_button.pack(pady=5)
+        self.copy_key_button.config(state=tk.DISABLED)
+
+        self.encryption_key = None
+
+    def encrypt_file(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            self.encryption_key = generate_key()
+            encrypt_file(file_path, self.encryption_key)
+            messagebox.showinfo("Success", "File encrypted successfully.")
+            self.copy_key_button.config(state=tk.NORMAL)
+
+    def decrypt_file(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            key = simpledialog.askstring("Input", "Enter the encryption key:")
+            if key:
+                decrypt_file(file_path, key.encode())
+                messagebox.showinfo("Success", "File decrypted successfully.")
+
+    def copy_key(self):
+        if self.encryption_key:
+            self.clipboard_clear()
+            self.clipboard_append(self.encryption_key.decode())
+            messagebox.showinfo("Success", "Encryption key copied to clipboard.")
 
 
 
