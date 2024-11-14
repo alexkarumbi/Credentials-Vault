@@ -695,8 +695,6 @@ class FileEncryptionPage(tk.Frame):
             messagebox.showinfo("Success", "Encryption key copied to clipboard.")
 
 
-
-
 def main():
     MainWindow = PWControlApp()
     MainWindow.geometry("280x420")
