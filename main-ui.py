@@ -86,19 +86,6 @@ class MenuPage(tk.Frame):
         logo_image.image = logo
         logo_image.pack(pady=10)
 
-        # # Add buttons for file encryption and decryption
-        # self.encrypt_button = tk.Button(self, text="Encrypt File", command=self.encrypt_file)
-        # self.encrypt_button.pack(pady=5)
-
-        # self.decrypt_button = tk.Button(self, text="Decrypt File", command=self.decrypt_file)
-        # self.decrypt_button.pack(pady=5)
-
-        # self.copy_key_button = tk.Button(self, text="Copy Key", command=self.copy_key)
-        # self.copy_key_button.pack(pady=5)
-        # self.copy_key_button.config(state=tk.DISABLED)
-
-        # self.encryption_key = None
-
         # Add buttons for account management and settings
         add_account_button = tk.Button(self, text="Add Account", command=lambda: self.controller.ShowFrame('AddAccountPage'))
         add_account_button.pack(pady=5)
@@ -115,29 +102,6 @@ class MenuPage(tk.Frame):
         # Add a button for file encryption page
         file_encryption_button = tk.Button(self, text="File Encryption", command=lambda: self.controller.ShowFrame('FileEncryptionPage'))
         file_encryption_button.pack(pady=5)
-
-    # def encrypt_file(self):
-    #     file_path = filedialog.askopenfilename()
-    #     if file_path:
-    #         self.encryption_key = generate_key()
-    #         encrypt_file(file_path, self.encryption_key)
-    #         messagebox.showinfo("Success", "File encrypted successfully.")
-    #         self.copy_key_button.config(state=tk.NORMAL)
-
-    # def decrypt_file(self):
-    #     file_path = filedialog.askopenfilename()
-    #     if file_path:
-    #         key = simpledialog.askstring("Input", "Enter the encryption key:")
-    #         if key:
-    #             decrypt_file(file_path, key.encode())
-    #             messagebox.showinfo("Success", "File decrypted successfully.")
-
-    # def copy_key(self):
-    #     if self.encryption_key:
-    #         self.clipboard_clear()
-    #         self.clipboard_append(self.encryption_key.decode())
-    #         messagebox.showinfo("Success", "Encryption key copied to clipboard.")    
-
 
 
 class AddAccountPage(tk.Frame):
