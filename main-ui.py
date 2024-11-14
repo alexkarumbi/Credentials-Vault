@@ -1,6 +1,5 @@
 import tkinter as tk
 import pyperclip
-import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
 from file_encryption import generate_key, encrypt_file, decrypt_file
 from config_parser import GetConfigPaster, ChangeConfigPasterValue
@@ -101,16 +100,16 @@ class MenuPage(tk.Frame):
         self.encryption_key = None
 
         # Add buttons for account management and settings
-        add_account_button = tk.Button(self, text="Add Account", command=lambda: self.controller.show_frame('AddAccountPage'))
+        add_account_button = tk.Button(self, text="Add Account", command=lambda: self.controller.ShowFrame('AddAccountPage'))
         add_account_button.pack(pady=5)
 
-        load_account_button = tk.Button(self, text="Load Account", command=lambda: self.controller.show_frame('LoadAccountPage'))
+        load_account_button = tk.Button(self, text="Load Account", command=lambda: self.controller.ShowFrame('LoadAccountPage'))
         load_account_button.pack(pady=5)
 
-        delete_account_button = tk.Button(self, text="Delete Account", command=lambda: self.controller.show_frame('DeleteAccountPage'))
+        delete_account_button = tk.Button(self, text="Delete Account", command=lambda: self.controller.ShowFrame('DeleteAccountPage'))
         delete_account_button.pack(pady=5)
 
-        settings_button = tk.Button(self, text="Settings", command=lambda: self.controller.show_frame('SettingsPage'))
+        settings_button = tk.Button(self, text="Settings", command=lambda: self.controller.ShowFrame('SettingsPage'))
         settings_button.pack(pady=5)
 
     def encrypt_file(self):
@@ -135,26 +134,26 @@ class MenuPage(tk.Frame):
             self.clipboard_append(self.encryption_key.decode())
             messagebox.showinfo("Success", "Encryption key copied to clipboard.")    
 
-class CredentialsVaultApp(tk.Tk):
-    def __init__(self, *args, **kwargs):
-        tk.Tk.__init__(self, *args, **kwargs)
-        container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+# class CredentialsVaultApp(tk.Tk):
+#     def __init__(self, *args, **kwargs):
+#         tk.Tk.__init__(self, *args, **kwargs)
+#         container = tk.Frame(self)
+#         container.pack(side="top", fill="both", expand=True)
+#         container.grid_rowconfigure(0, weight=1)
+#         container.grid_columnconfigure(0, weight=1)
 
-        self.frames = {}
-        for F in (LoginPage, MenuPage, AddAccountPage, LoadAccountPage, DeleteAccountPage, SettingsPage):
-            page_name = F.__name__
-            frame = F(parent=container, controller=self)
-            self.frames[page_name] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+#         self.frames = {}
+#         for F in (LoginPage, MenuPage, AddAccountPage, LoadAccountPage, DeleteAccountPage, SettingsPage):
+#             page_name = F.__name__
+#             frame = F(parent=container, controller=self)
+#             self.frames[page_name] = frame
+#             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("LoginPage")
+#         self.show_frame("LoginPage")
 
-    def show_frame(self, page_name):
-        frame = self.frames[page_name]
-        frame.tkraise()
+#     def show_frame(self, page_name):
+#         frame = self.frames[page_name]
+#         frame.tkraise()
 class AddAccountPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
